@@ -1,0 +1,198 @@
+;---- PROGRAM ----;
+start:
+.org 0
+
+;wyjścia
+ldi r16, 0xff
+out ddrb, r16
+out ddrd, r16
+
+call czas
+
+stop: rjmp stop
+
+
+;---- PODPROGRAMY ----;
+
+
+;--wybór wyświetlacza--;
+w_w:
+com r16
+out portb, r16
+ret
+
+
+;--wyświetlacz 1--;
+w1:
+	ldi zl, low(2*liczba)
+	ldi zh, high(2*liczba)
+	add zl, r18
+	lpm r17, Z
+	com r17
+	out portd, r17
+	call delay
+
+	ret
+
+
+;--wyświetlacz 2--;
+w2:
+	ldi zl, low(2*liczba)
+	ldi zh, high(2*liczba)
+
+	add zl, r19
+	lpm r17, Z
+	com r17
+	out portd, r17
+	call delay
+
+	ret
+
+
+;--wyświetlacz 3--;
+w3:
+	ldi zl, low(2*liczba)
+	ldi zh, high(2*liczba)
+
+	add zl, r20
+	lpm r17, Z
+	com r17
+	out portd, r17
+	call delay
+
+	ret
+
+
+;--wyświetlacz 4--;
+w4:
+	ldi zl, low(2*liczba)
+	ldi zh, high(2*liczba)
+
+	add zl, r21
+	lpm r17, Z
+	com r17
+	out portd, r17
+	call delay
+
+	ret
+
+
+;--opóźnienie wyświetlaczy--;
+delay:
+	push r16
+	ldi r16, 200
+	loop:
+	dec r16
+	brne loop
+
+	pop r16
+	ret
+
+
+;--czasomierz--;
+czas:
+	push r16
+	push r17
+	push r18
+	push r19
+	push r20
+	push r21
+	push r26
+	push r27
+	push r28
+	push r29
+
+	;lista
+	liczba: .DB 0x7e, 0x30, 0x6d, 0x79, 0x33, 0x5b, 0x5f, 0x70, 0x7f, 0x7b
+
+	;porównanie z snake'iem?
+
+	;stałe do pętli
+	ldi r29, 10
+	ldi r26, 6
+	ldi r27, 100
+	ldi r28, 62
+
+	ldi r18, 0
+	ldi r19, 0
+	ldi r20, 0
+	ldi r21, 0
+
+	start2:
+	;wyświetlacz 1
+	ldi r16, 0b1000
+	call w_w
+
+	call w1
+
+	;wyświetlacz 2
+	ldi r16, 0b0100
+	call w_w
+
+	call w2
+
+	;wyświetlacz 3
+	ldi r16, 0b0010
+	call w_w
+
+	call w3
+
+	;wyświetlacz 4
+	ldi r16, 0b0001
+	call w_w
+
+	call w4
+
+	;opóźnienie
+	dec r27
+	brne start2
+	ldi r27, 100 ;10 lub 100 dla wyświetlaczy 1-3
+	dec r28
+	brne start2
+	ldi r28, 62 ;min r27 i 2 dla wyświetlacza 4
+
+	;pętla w1
+	inc r18
+	cp r18, r29
+	brne start2
+
+	;pętla w2
+	ldi r18, 0
+	inc r19
+	cp r19, r26
+	brne start2
+
+	;pętla w3
+	ldi r18, 0
+	ldi r19, 0
+	inc r20
+	cp r20, r29
+	brne start2
+
+	;pętla w4
+	ldi r18, 0
+	ldi r19, 0
+	ldi r20, 0
+	inc r21
+	cp r21, r26
+	brne start2
+
+	ldi r18, 0
+	ldi r19, 0
+	ldi r20, 0
+	ldi r21, 0
+
+	;domknięcie pętli?
+
+	pop r16
+	pop r17
+	pop r18
+	pop r19
+	pop r20
+	pop r21
+	pop r26
+	pop r27
+	pop r28
+	pop r29
+
+	ret
