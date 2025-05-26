@@ -108,15 +108,14 @@ czas:
 	;porównanie z snake'iem?
 
 	;stałe do pętli
-	ldi r29, 10
-	ldi r26, 6
+	ldi r26, -1
 	ldi r27, 100
 	ldi r28, 62
 
-	ldi r18, 0
-	ldi r19, 0
-	ldi r20, 0
-	ldi r21, 0
+	ldi r18, 9
+	ldi r19, 5
+	ldi r20, 9
+	ldi r21, 5
 
 	start2:
 	;wyświetlacz 1
@@ -152,35 +151,30 @@ czas:
 	ldi r28, 62 ;min r27 i 2 dla wyświetlacza 4
 
 	;pętla w1
-	inc r18
-	cp r18, r29
+	dec r18
+	cp r18, r26
 	brne start2
 
 	;pętla w2
-	ldi r18, 0
-	inc r19
+	ldi r18, 9
+	dec r19
 	cp r19, r26
 	brne start2
 
 	;pętla w3
-	ldi r18, 0
-	ldi r19, 0
-	inc r20
-	cp r20, r29
+	ldi r18, 9
+	ldi r19, 5
+	dec r20
+	cp r20, r26
 	brne start2
 
 	;pętla w4
-	ldi r18, 0
-	ldi r19, 0
-	ldi r20, 0
-	inc r21
+	ldi r18, 9
+	ldi r19, 5
+	ldi r20, 9
+	dec r21
 	cp r21, r26
 	brne start2
-
-	ldi r18, 0
-	ldi r19, 0
-	ldi r20, 0
-	ldi r21, 0
 
 	;domknięcie pętli?
 
